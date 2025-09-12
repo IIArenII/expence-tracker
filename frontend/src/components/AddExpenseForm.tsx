@@ -2,6 +2,25 @@ import { useState } from "react";
 
 const API_URL = "http://localhost:5000/api/expenses";
 
+// Fixed category options
+const categories = [
+  "Grocery",
+  "Clothes",
+  "Personal",
+  "Bills",
+  "Transport",
+  "Health",
+  "Education",
+  "Entertainment",
+  "Travel",
+  "Rent",
+  "Utilities",
+  "Dining Out",
+  "Subscriptions",
+  "Savings",
+  "Other",
+];
+
 export default function AddExpenseForm({
   onAdd,
 }: {
@@ -9,7 +28,7 @@ export default function AddExpenseForm({
 }) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(categories[0]); // default first option
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +42,7 @@ export default function AddExpenseForm({
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ title, amount, category }),
+        body: JSON.stringify({ title, amount: Number(amount), category }),
       });
 
       if (!res.ok) throw new Error("Failed to add expense");
@@ -36,7 +55,7 @@ export default function AddExpenseForm({
       // Clear form
       setTitle("");
       setAmount("");
-      setCategory("");
+      setCategory(categories[0]); // reset to first category
     } catch (err: any) {
       alert(err.message);
     }
@@ -47,6 +66,7 @@ export default function AddExpenseForm({
       onSubmit={handleSubmit}
       className="bg-white shadow rounded-xl p-4 flex flex-col sm:flex-row gap-4 mb-6"
     >
+      {/* Title */}
       <input
         type="text"
         placeholder="Title"
@@ -55,6 +75,8 @@ export default function AddExpenseForm({
         className="flex-1 border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
         required
       />
+
+      {/* Amount */}
       <input
         type="number"
         placeholder="Amount"
@@ -63,17 +85,25 @@ export default function AddExpenseForm({
         className="w-full sm:w-32 border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
         required
       />
-      <input
-        type="text"
-        placeholder="Category"
+
+      {/* Category Dropdown */}
+      <select
         value={category}
         onChange={(e) => setCategory(e.target.value)}
         className="flex-1 border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
         required
-      />
+      >
+        {categories.map((cat) => (
+          <option key={cat} value={cat}>
+            {cat}
+          </option>
+        ))}
+      </select>
+
+      {/* Submit Button */}
       <button
         type="submit"
-        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-medium transition"
+        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-medium transition w-full sm:w-auto"
       >
         Add Expense
       </button>
