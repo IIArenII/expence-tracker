@@ -2,6 +2,10 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+// Password validation regex
+// At least 8 chars, one uppercase, one lowercase, one number
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
 // Register
 const registerUser = async (req, res) => {
   try {
@@ -9,16 +13,27 @@ const registerUser = async (req, res) => {
 
     // Check if user exists
     const userExists = await User.findOne({ email });
-    if (userExists) return res.status(400).json({ message: 'User already exists' });
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // ✅ Case 1: If password is provided → validate it
+    let hashedPassword = null;
+    if (password) {
+      if (!passwordRegex.test(password)) {
+        return res.status(400).json({
+          message:
+            'Password must be at least 8 characters long, include 1 uppercase letter, 1 lowercase letter, and 1 number.',
+        });
+      }
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
 
-    // Create user
+    // ✅ Case 2: If password is missing → this is a Google signup
     const user = await User.create({
       name,
       email,
-      password: hashedPassword,
+      password: hashedPassword, // null for Google users
     });
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -26,6 +41,7 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // Login
 const loginUser = async (req, res) => {
