@@ -1,23 +1,51 @@
-# Node
-node_modules
+# -----------------
+# Node.js
+# -----------------
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Build output
-client/build
-server/dist
-
-# Logs
-logs
-*.log
-
-# Environment files
+# -----------------
+# Env files
+# -----------------
 .env
-.env.local
 .env.*.local
 
-# OS/system files
+# -----------------
+# Frontend (React/Vite/CRA)
+# -----------------
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+frontend/.DS_Store
+
+# -----------------
+# Backend (Express/Node)
+# -----------------
+backend/node_modules/
+backend/dist/
+backend/build/
+backend/.DS_Store
+
+# -----------------
+# Logs
+# -----------------
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# -----------------
+# Editor & System
+# -----------------
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
