@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-const API_URL = "http://localhost:5000/api/expenses";
-
+const API_URL = `${import.meta.env.VITE_API_URL}/api/expenses`;
 // Fixed category options
 const categories = [
   "Grocery",

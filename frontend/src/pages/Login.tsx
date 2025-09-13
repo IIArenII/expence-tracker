@@ -43,7 +43,7 @@ const Login: React.FC<LoginProps> = ({ setToken }) => {
   // Google login
   const handleGoogleLogin = async (credentialResponse: any) => {
     try {
-      const response = await fetch("http://localhost:5000/api/users/google-login", {
+      const response = await fetch( `${import.meta.env.VITE_API_URL}/api/users/google-login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

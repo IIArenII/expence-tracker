@@ -15,7 +15,7 @@ export default function App() {
 
     if (savedToken) {
       // Validate token with backend
-      fetch("http://localhost:5000/api/users/validate", {
+      fetch(`${import.meta.env.VITE_API_URL}/api/users/validate`, {
         headers: { Authorization: `Bearer ${savedToken}` } // ✅ use savedToken
       })
         .then((res) => {
