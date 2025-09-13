@@ -22,6 +22,14 @@ frontend/build/
 frontend/.vite/
 frontend/.DS_Store
 
+# Environment variables
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+backend/.env
+backend/.env.local
+backend/.env.*.local
+
 # -----------------
 # Backend (Express/Node)
 # -----------------
